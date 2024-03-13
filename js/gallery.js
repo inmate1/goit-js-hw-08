@@ -64,22 +64,33 @@ const images = [
   },
 ];
 
+const galleryBox = document.querySelector('.gallery');
+galleryBox.addEventListener('click', handleClick);
 
+function handleClick(event) {
+  event.preventDefault();
+  if (event.target.nodeName === 'IMG') {
+    const imgSrc = event.target.dataset.source;
+    const instance = basicLightbox.create(`
+    <img src="${imgSrc}" width="800" height="600">`);
+    instance.show();
+  }
+}
 
-
-
-
-<li class="gallery-item">
-  <a class="gallery-link" href="large-image.jpg">
+function buildGallery(params) {
+  params.map(image => {
+    const { preview, original, description } = image;
+    const imgItem = `<li class="gallery-item">  
+   <a class="gallery-link" href= "${original}">   
     <img
       class="gallery-image"
-      src="small-image.jpg"
-      data-source="large-image.jpg"
-      alt="Image description"
+      src= "${preview}"
+      data-source= "${original}"
+      alt= "${description}"
     />
-  </a>
-</li>;
-В атрибуте srcтега <img>указываем ссылку на маленькую версию изображения.
-Для атрибута altиспользуем описание изображения.
-Ссылка на большое изображение должна храниться в data-атрибуте  source на элементе  <img>и указываться в  href ссылке.
-Обратите внимание на то, что изображение окутано ссылкой, в которой атрибут hrefуказывает на путь к файлу с изображением. Следовательно, клик по нему может вызвать загрузку изображения на компьютер пользователя. Запрещайте это поведение по умолчанию.
+  </a> 
+</li>`;
+    galleryBox.insertAdjacentHTML('beforeend', imgItem);
+  });
+}
+buildGallery(images);
