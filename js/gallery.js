@@ -65,32 +65,62 @@ const images = [
 ];
 
 const galleryBox = document.querySelector('.gallery');
-galleryBox.addEventListener('click', handleClick);
 
+//подключаем слушателя на ul
+galleryBox.addEventListener('click', handleClick);
 function handleClick(event) {
   event.preventDefault();
-  if (event.target.nodeName === 'IMG') {
-    const imgSrc = event.target.dataset.source;
-    const instance = basicLightbox.create(`
-    <img src="${imgSrc}" width="800" height="600">`);
-    instance.show();
+  // console.log(event.target);
+  if (event.target.nodeName !== 'IMG') {
+    return;
   }
+  const imgSrc = event.target.dataset.source;
+  const imgAlt = event.target.getAttribute('alt');
+  const instance = basicLightbox.create(
+    `<img src="${imgSrc}" alt="${imgAlt}  auto"width="800" height="600">`
+  );
+  instance.show();
 }
 
+galleryBox.insertAdjacentHTML('afterbegin', buildGallery(images)); //добавляем элементы li в ul HTML
+
+//создаем  эл. li
 function buildGallery(params) {
-  params.map(image => {
-    const { preview, original, description } = image;
-    const imgItem = `<li class="gallery-item">  
-   <a class="gallery-link" href= "${original}">   
+  return params
+    .map(
+      ({ preview, original, description }) =>
+        ` <li class="gallery-item">
+  <a class="gallery-link" href="${original}">
     <img
       class="gallery-image"
-      src= "${preview}"
-      data-source= "${original}"
-      alt= "${description}"
+      style="cursor: url(./img/cursor.svg), auto;"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
     />
-  </a> 
-</li>`;
-    galleryBox.insertAdjacentHTML('beforeend', imgItem);
-  });
+  </a>
+</li>`
+    )
+    .join('');
 }
-buildGallery(images);
+
+///////////////////////////////////////////////////////
+
+// создаем  эл. li  второй способ
+// function buildGallery(params) {
+//   const itemsLi = params.map(image => {
+//     const { preview, original, description } = image;
+//     return `<li class="gallery-item">
+//    <a class="gallery-link" href= "${original}">
+//     <img
+//       class="gallery-image"
+//       style="cursor: url(./img/cursor.svg), auto;"
+//       src= "${preview}"
+//       data-source= "${original}"
+//       alt= "${description}"
+//     />
+//   </a>
+// </li>`;
+//   });
+//   return itemsLi.join(' ');
+// }

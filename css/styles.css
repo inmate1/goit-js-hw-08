@@ -20,7 +20,7 @@ img {
   display: flex;
   flex-wrap: wrap;
   max-width: 1440px;
-  max-height: 696px;
+  height: 696px;
   padding: 24px 156px;
   gap: 24px;
   margin: 0 auto;
@@ -31,9 +31,9 @@ img {
   height: 200px;
 }
 
-.gallery-link:hover {
+/* .gallery-link:hover {
   cursor: url(../img/cursor.svg), auto;
-}
+} */
 
 .gallery-image {
   width: 100%;
